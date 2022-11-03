@@ -43,6 +43,11 @@ const productSchema = new mongoose.Schema({
     installments: {
         type: Number
     },
+    merchantStatus:[{
+        type:string,
+        enum:["ACTIVE","INACTIVE"],
+        default:"INACTIVE"
+    }],
     deletedAt: {
         type: Date
     },
