@@ -4,7 +4,7 @@ const sellerSchema=new mongoose.Schema({
         fname: {type:String, required:true, trim:true},
         lname: {type:String, required:true, trim:true},
         email: {type: String, required:true,unique:true, lowercase:true,trim:true,},
-        profileImage: {type:String, required:true}, // s3 link
+        //profileImage: {type:String, required:true}, // s3 link
         phone: {type:String, unique:true, required:true,}, 
         password: {type: String, required:true,}, // encrypted password
         address: {

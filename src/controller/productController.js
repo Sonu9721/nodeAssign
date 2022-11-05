@@ -1,26 +1,114 @@
 const mongoose=require('mongoose')
-const { uploadFile } = require("../awsFile/aws")
 const productModel = require("../model/productModel")
-const validator=require("../validator/validator")
 
 
+const isValid = (value) => {
+    if (typeof value === 'undefined' || value === null) return false
+    if (typeof value === 'string' && value.trim().length === 0) return false
+    if (typeof value === 'number' && value.toString().trim().length === 0) return false
+    return true;
+}
+const isValidRequestBody = (requestBody) => {
+    if (Object.keys(requestBody).length) return true
+    return false;
+}
 
 const createproducts = async function(req, res) {
 
-    let data = req.body
+    let reqBody = req.body
 
-    let files = req.files
-    if (files && files.length > 0) {
-        //upload to s3 and get the uploaded link
-        // res.send the link back to frontend/postman
-        let uploadedFileURL = await uploadFile(files[0])
-        data.productImage = uploadedFileURL
-       
-    } else {
-        return res.status(400).send({ message: "profile cover image not given" })
-    }
+    //object destructuring
+    let {companyName,phone,email,address,city,pincode,productImage,productTypes,productName,price,availableSizes,quantity,features,manufacturingDetails,description}=reqBody
+
+        if (!isValidRequestBody(reqBody)) {
+            return res.status(400).send({ status: false, message: "please provide input credentials" });
+        }
+    
+        if (!isValid(companyName)) {
+            return res.status(400).send({ status: false, message: "please provide companyName credentials" });
+        }
+    
+        if (!isValid(phone)) {
+            return res.status(400).send({status: false, msg: "Enter phone no. " })
+        }
+    
+        if (!(/^[6-9]\d{9}$/.test(phone))) {
+            return res.status(400).send({ status: false, message: `Phone number should be a valid number` })
+    
+        }
+        const isphone = await productModel.findOne( {phone} )
+        if (isphone) {
+            return res.status(400).send({status: false, msg: "Phone no.  is already used" })
+        }
+    
+        if (!isValid(email)) {
+            return res.status(400).send({ status: false, msg: "Enter email " })
+        }
+        if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.trim()))) {
+            return res.status(400).send({ status: false, message: `Email should be a valid email address` })
+            
+        }
+        const isemail = await productModel.findOne({email})
+        if (isemail) {
+            return res.status(400).send({status: false, msg: "Email.  is already used" })
+        }
+         //address---------------------------------------------------------------------------------------------------
+        if (!isValid(address)) {
+            return res.status(400).send({ status: false, message: "address required" })
+        }
+
+        if (!isValid(city)) {
+            return res.status(400).send({ status: false, message: "city is  required" })
+
+        }
+        if (!isValid(pincode)) {
+            return res.status(400).send({ status: false, message: "pincode is  required " })
+
+        }
+     
+        if (!isValid(productImage)) {
+            return res.status(400).send({ status: false, message: "please provide productImage credentials" });
+        }        
+    
+     
+            
+        if (!isValid(productTypes)) {
+            return res.status(400).send({ status: false, message: "please provide productTypes credentials" });
+        }
+    
+        
+        if (!isValid(productName)) {
+            return res.status(400).send({ status: false, message: "please provide productName credentials" });
+        }
+    
+        if (!isValid(price)) {
+            return res.status(400).send({ status: false, message: "please provide price credentials" });
+        }
+    
+        if (!isValid(availableSizes)) {
+            return res.status(400).send({ status: false, message: "please provide availableSizes credentials" });
+        }
+    
+        if (!isValid(quantity)) {
+            return res.status(400).send({ status: false, message: "please provide quantity credentials" });
+        }
+    
+        if (!isValid(features)) {
+            return res.status(400).send({ status: false, message: "please provide features credentials" });
+        }
+    
+        if (!isValid(manufacturingDetails)) {
+            return res.status(400).send({ status: false, message: "please provide manufacturingDetails credentials" });
+        }
+    
+    
+        if (!isValid(description)) {
+            return res.status(400).send({ status: false, message: "please provide description credentials" });
+        }
+
    
-    const Newproduct = await productModel.create(data)
+   
+    const Newproduct = await productModel.create(reqBody)
     return res.status(201).send({ status: true, message: "Product created successfully", data: Newproduct })
 
 
@@ -28,9 +116,9 @@ const createproducts = async function(req, res) {
 const getProductBYQuery = async function(req, res) {
 
     try {
-        if (req.query.size || req.query.name || req.query.priceGreaterThan || req.query.priceLessThan) {
-            let availableSizes = req.query.size
-            let title = req.query.name
+        if (req.query.availableSizes || req.query.productName || req.query.priceGreaterThan || req.query.priceLessThan) {
+            let availableSizes = req.query.availableSizes
+            let title = req.query.productName
             let priceGreaterThan = req.query.priceGreaterThan
             let priceLessThan = req.query.priceLessThan
             obj = {}

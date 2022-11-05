@@ -1,7 +1,5 @@
 const bcrypt = require('bcrypt')
-const { uploadFile } = require("../awsFile/aws")
 const mongoose = require('mongoose')
-const validator=require("../validator/validator")
 const jwt = require("jsonwebtoken");
 const userModel=require("../model/userModel")
 const isValid = (value) => {
@@ -92,20 +90,6 @@ const createUser = async function(req, res) {
 
         data.address = userAdd
         console.log(data.address)
-
-        //uploading cover photo in aws-------------------------------------------------------------------------
-        let files = req.files
-        if (files && files.length > 0) {
-            //upload to s3 and get the uploaded link
-            // res.send the link back to frontend/postman
-            let uploadedFileURL = await uploadFile(files[0])
-            data.profileImage = uploadedFileURL
-            console.log(2)
-        } else {
-            return res.status(400).send({ message: "profile cover image not given" })
-        }
-
-
 
         // //create user--------------------------------------------------------------------------------------------------
         const Newuser = await userModel.create(data)

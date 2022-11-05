@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const userModel = require("../model/userModel")
+const userModel = require("../model/userModel");
+
 
 
 const isValidRequestBody = function(requestBody) {
@@ -69,42 +70,7 @@ const validLogin = function(req, res, next) {
 };
 
 
-const validproduct = function(req, res, next) {
-    const requestBody = req.body;
-    if (!isValidRequestBody(requestBody)) {
-        return res.status(400).send({ status: false, message: "please provide input credentials" });
-    }
 
-    const { title, description, price, currencyId, currencyFormat, isFreeShipping, productImage, style, availableSizes, installments } = requestBody
-
-    if (!isValid(title)) {
-        return res.status(400).send({ status: false, message: "please provide title credentials" });
-    }
-
-
-    if (!isValid(description)) {
-        return res.status(400).send({ status: false, message: "please provide description credentials" });
-    }
-
-
-    if (!isValid(currencyId)) {
-        return res.status(400).send({ status: false, message: "please provide currencyid credentials" });
-    }
-
-    if (!isValid(currencyFormat)) {
-        return res.status(400).send({ status: false, message: "please provide currencyformat credentials" });
-    }
-
-    if (!isValid(style)) {
-        return res.status(400).send({ status: false, message: "please provide style credentials" });
-    }
-
-    if (!isValidenum(availableSizes)) {
-        return res.status(400).send({ status: false, message: "please provide valid avalable size" });
-    }
-    next()
-
-}
 const getcartvalid = function(req, res, next) {
     const requestBody = req.body;
     if (!isValidRequestBody(requestBody)) {
@@ -196,4 +162,4 @@ const creatOrder = function(req, res, next) {
 
 
 
-module.exports = { validLogin, validproduct, postcart, getcartvalid, updateProduct, creatOrder }
+module.exports = { validLogin, postcart, getcartvalid, updateProduct, creatOrder }

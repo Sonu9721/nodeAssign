@@ -6,13 +6,14 @@ const authenti = require('../middileware/authentication')
 const productController = require("../controller/productController");
 
 
+
 // User Api
 router.post('/register', userController.createUser)
 router.post('/login', valid.validLogin, userController.userLogin)
 
 
 // product api
-router.post('/products', valid.validproduct, productController.createproducts)
+router.post('/products', productController.createproducts)
 router.get("/products", productController.getProductBYQuery)
 router.get("/products/:productId", productController.getProductById);
 router.put("/products/:productId", valid.updateProduct, productController.updateProduct)
