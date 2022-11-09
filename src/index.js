@@ -32,7 +32,15 @@ const options = {
 const swaggerSpec=swaggerDocument(options)
 app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
-
+/**
+ * @swagger
+ * /products:
+ *          summary:This is api used to check if get method is working or not
+ *          description:This is api used to check if get method is working or not
+ *          response:
+ *          200:
+ *             description:To test get method
+ */
 
 
 mongoose.connect("mongodb+srv://functionup:deep982@cluster0.r0zd4.mongodb.net/nodeAssignment", {

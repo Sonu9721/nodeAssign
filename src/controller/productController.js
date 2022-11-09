@@ -17,6 +17,17 @@ const createproducts = async function(req, res) {
 
     let reqBody = req.body
 
+    let files = req.files
+    if (files && files.length > 0) {
+        //upload to s3 and get the uploaded link
+        // res.send the link back to frontend/postman
+        let uploadedFileURL = await uploadFile(files[0])
+        data.productImage = uploadedFileURL
+       
+    } else {
+        return res.status(400).send({ message: "profile cover image not given" })
+    }
+
     //object destructuring
     let {companyName,phone,email,address,city,pincode,productImage,productTypes,productName,price,availableSizes,quantity,features,manufacturingDetails,description}=reqBody
 
