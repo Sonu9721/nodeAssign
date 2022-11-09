@@ -16,7 +16,8 @@ const adminSchema = new mongoose.Schema({
             required: true
             // s3 link
         },
-    youtubeVideos:{type:String,required:true},
+    uploadAlbum :[] ,
+    youtubeVideos:{type:[],required:true},
     vender:{type:String},
     deletedAt: {
         type: Date

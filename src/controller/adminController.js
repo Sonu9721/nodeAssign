@@ -33,14 +33,15 @@ const adminDocuments = async function (req,res){
         // res.send the link back to frontend/postman
         let uploadedFileURL = await uploadFile(files[0])
         data.uplodBanner = uploadedFileURL;
-        data.galaryImage=uploadedFileURL
+        data.galaryImage=uploadedFileURL;
+        data.uploadAlbum=uploadedFileURL
        
     } else {
         return res.status(400).send({ message: "profile cover image not given" })
     }
 
     //Object destructuring
-    let {uplodBanner,brideName,groomName,cityName,eventDate,galaryImage,youtubeVideos,vender}=data;
+    let {uplodBanner,brideName,groomName,cityName,eventDate,galaryImage,uploadAlbum,youtubeVideos,vender}=data;
 
     
     if (!isValidRequestBody(data)) {
@@ -68,6 +69,10 @@ const adminDocuments = async function (req,res){
     }
     if (!isValid(galaryImage)) {
         return res.status(400).send({ status: false, message: "please provide galaryImage credentials" });
+    
+    }
+    if (!isValid(uploadAlbum)) {
+        return res.status(400).send({ status: false, message: "please provide uploadAlbum credentials" });
     
     }
     if (!isValid(youtubeVideos)) {
